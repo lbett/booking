@@ -30,7 +30,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           # Playwright headless
-          npx playwright test --project=chromium --disable-gpu
+          npx playwright test --project=chromium
             
 
       - name: Install Allure commandline
