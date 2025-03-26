@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # O usa 'macos-latest' si estás en MacOS
+    runs-on: ubuntu-latest  # 'macos-latest' for MacOS
 
     steps:
       - name: Checkout code
@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: allure-report
-          path: allure-results  # Usamos allure-results aquí, no allure-report
+          path: allure-results  #  allure-results, no allure-report
 
       - name: Serve Allure report
         run: |
