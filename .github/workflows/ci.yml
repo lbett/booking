@@ -29,8 +29,8 @@ jobs:
 
       - name: Run Playwright tests
         run: |
-          # Ejecutar las pruebas con Chromium en modo headless
-          npx playwright test --project=chromium --headed=false --no-sandbox --disable-gpu
+          # Ejecutar las pruebas con Playwright en modo headless
+          npx playwright test --project=chromium --no-sandbox --disable-gpu      
 
       - name: Install Allure commandline
         run: npm install -g allure-commandline --save-dev
