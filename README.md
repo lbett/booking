@@ -61,10 +61,13 @@ This repository is integrated with GitHub Actions for continuous integration and
 5. Install Allure Command Line and generate the report.
 6. Upload Allure Report as an artifact.
 
-## Loom Video Demonstration
-A Loom video has been recorded demonstrating the automation process, including:
+## Video Demonstration
+Screen video has been recorded demonstrating the automation process, including:
 - Running the automated tests.
-- [Link to Loom Video](your-loom-video-link)
+- Executation of Allure report
+- Re executing a failing tests
+- The link to the recording of my screen
+https://drive.google.com/file/d/1u5chRlyV5VQcLBx4shPe5eGoCpY9yKPl/view?usp=drive_link
 
 ## Test Case Documentation
 Detailed test cases are documented in the `TEST_CASES.md` file.
