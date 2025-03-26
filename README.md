@@ -1,125 +1,74 @@
-Fuse QA Take-Home Challenge
-Overview
+# Fuse QA Take-Home Challenge
+
+## Overview
 The goal of this challenge is to design, document, and automate test cases for Booking.com using AI-driven strategies. You will validate real-world workflows on the platform using an automation framework of your choice (Playwright, Cypress, Selenium, WebdriverIO).
 
-User Stories & Test Scenarios
-User Story 1: Hotel Search & Filtering
-Test Case 1.1: Search for hotels in 'New York'
-Input: City = 'New York'
+## User Stories & Test Scenarios
 
-Action: Enter the city in the search field.
+### User Story 1: Hotel Search & Filtering
+#### Test Case 1.1: Search for hotels in 'New York'
+#### Test Case 1.2: Select check-in and check-out dates
+#### Test Case 1.3: Apply "Guest Rating: 8+" filter
+#### Test Case 1.4: Sort by "Lowest Price"
+#### Test Case 1.5: No "Guest Rating" filter applied
 
-Expected: The page should display hotels located in New York.
-
-Test Case 1.2: Select check-in and check-out dates
-Input: Valid check-in and check-out dates.
-
-Action: Select the dates in the calendar.
-
-Expected: The results should update based on the selected dates, showing only rooms available for those dates.
-
-Test Case 1.3: Apply "Guest Rating: 8+" filter
-Input: Filter = 'Guest Rating: 8+'
-
-Action: Apply the guest rating filter.
-
-Expected: The results should update to show only hotels with a rating of 8 or higher.
-
-Test Case 1.4: Sort by "Lowest Price"
-Input: Sort by "Lowest Price".
-
-Action: Apply the lowest price sorting.
-
-Expected: The results should be displayed in ascending price order.
-
-Test Case 1.5: No "Guest Rating" filter applied
-Input: Do not apply any filter.
-
-Action: Perform the search without applying the "Guest Rating" filter.
-
-Expected: The results should show a variety of guest ratings, without any restriction.
-
-AI in Test Case Generation
+## AI in Test Case Generation
 By using AI to enhance the test cases, additional or edge scenarios were identified that may not be immediately obvious, such as:
-
-Searching for non-existent cities.
-
-Selecting past dates.
+- Searching for non-existent cities.
+- Selecting past dates.
 
 These are common scenarios that users may not always consider but can happen frequently in real-world use. For example, users might search for hotels in a city that doesn't exist or select dates in the past, which should trigger validation errors.
 
-AI Contributions:
+**AI Contributions:**
+- AI (ChatGPT) was used to generate additional test cases, such as searching with no results and verifying the handling of invalid dates or non-existent cities.
+- AI also helped refine edge cases for more comprehensive coverage.
 
-AI (ChatGPT) was used to generate additional test cases, such as searching with no results and verifying the handling of invalid dates or non-existent cities.
+## Test Automation Framework
+- **Framework Used:** [Playwright](https://playwright.dev) (or whichever framework you used).
+- **Assertions:** All critical user actions were validated using meaningful assertions.
 
-AI also helped refine edge cases for more comprehensive coverage.
+## Setup & Installation
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/lbett/booking.git
+    cd booking-qa-automation
+    ```
 
-Test Automation Framework
-Framework Used: Playwright (or whichever framework you used).
+2. Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-Assertions: All critical user actions were validated using meaningful assertions.
+3. Run the tests:
+    ```bash
+    npm run test
+    ```
 
-Setup & Installation
-Clone the repository:
+4. Generate the Allure Report:
+    ```bash
+    allure generate allure-results --clean
+    allure serve allure-results
+    ```
 
-bash
-Copy
-Edit
-git clone https://github.com/your-username/booking-qa-automation.git
-cd booking-qa-automation
-Install the dependencies:
+## CI/CD Pipeline
+This repository is integrated with GitHub Actions for continuous integration and delivery. The pipeline is triggered on push or pull request to the `main` branch.
 
-bash
-Copy
-Edit
-npm install
-Run the tests:
+### Steps Executed in CI:
+1. Checkout the code.
+2. Set up Node.js.
+3. Install dependencies.
+4. Run Playwright tests.
+5. Install Allure Command Line and generate the report.
+6. Upload Allure Report as an artifact.
 
-bash
-Copy
-Edit
-npm run test
-Generate the Allure Report:
-
-bash
-Copy
-Edit
-allure generate allure-results --clean
-allure serve allure-results
-CI/CD Pipeline
-This repository is integrated with GitHub Actions for continuous integration and delivery. The pipeline is triggered on push or pull request to the main branch.
-
-Steps Executed in CI:
-Checkout the code.
-
-Set up Node.js.
-
-Install dependencies.
-
-Run Playwright tests.
-
-Install Allure Command Line and generate the report.
-
-Upload Allure Report as an artifact.
-
-Loom Video Demonstration
+## Loom Video Demonstration
 A Loom video has been recorded demonstrating the automation process, including:
+- Running the automated tests.
+- [Link to Loom Video](your-loom-video-link)
 
-Running the automated tests.
+## Test Case Documentation
+Detailed test cases are documented in the `TEST_CASES.md` file.
 
-Explanation of AI integration in the workflow.
-
-Link to Loom Video
-
-Test Case Documentation
-Detailed test cases are documented in the TEST_CASES.md file.
-
-Bonus Features
-Parallel Execution: Tests run in parallel to speed up execution.
-
-AI-Driven Test Maintenance: AI tools are used to optimize flaky tests.
-
-Future Improvements
-Cloud Execution: Running tests on platforms like Sauce Labs or BrowserStack for cross-browser testing.
-
-CI/CD Integration with Jenkins/CircleCI: Expanding CI/CD pipeline capabilities for enhanced automation.
+## Future Improvements
+- **Cloud Execution:** Running tests on platforms like Sauce Labs or BrowserStack for cross-browser testing.
+- **CI/CD Integration with Jenkins/CircleCI:** Expanding CI/CD pipeline capabilities for enhanced automation.
