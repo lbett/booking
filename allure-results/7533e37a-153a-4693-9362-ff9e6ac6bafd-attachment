@@ -1,0 +1,123 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Apply "Guest Rating: 8+" filter
+- Location: /Users/lorenabettoni/Desktop/booking/tests/booking.spec.ts:37:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByLabel('Very Good: 8+', { exact: true })
+
+    at /Users/lorenabettoni/Desktop/booking/tests/booking.spec.ts:46:59
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Bookings main page loads', async ({ page }) => {
+   4 |   await page.goto('https://www.booking.com');
+   5 |   await expect(page).toHaveTitle(/Booking/);
+   6 | });
+   7 |
+   8 | test('Search for hotels in New York', async ({ page }) => {
+   9 |   await page.goto('https://www.booking.com');
+  10 |   await page.click("input[id=':rh:']");
+  11 |   await page.fill('[name="ss"]', 'New York');
+  12 |   await page.getByRole('button', { name: 'New York New York, United' }).click();
+  13 |   await page.getByRole('button', { name: 'Search' }).click();
+  14 |
+  15 |   const resultsHeading = await page.getByRole('heading', { name: 'properties found' });
+  16 |   await resultsHeading.waitFor({ state: 'visible' });
+  17 |
+  18 |   const headingText = await resultsHeading.textContent();
+  19 |   expect(headingText).toContain('New York');
+  20 | });
+  21 |
+  22 | test('Select check-in and check-out dates', async ({ page }) => {
+  23 |   await page.goto('https://www.booking.com');
+  24 |   await page.click("input[id=':rh:']");
+  25 |   await page.fill('[name="ss"]', 'New York');
+  26 |   await page.getByRole('button', { name: 'New York New York, United' }).click();
+  27 |   await page.locator('span[data-date="2025-04-18"]').click();
+  28 |   await page.getByRole('button', { name: 'Next month' }).click();
+  29 |   await page.locator('span[data-date="2025-05-16"]').click();
+  30 |   await page.getByRole('button', { name: 'Search' }).click();
+  31 |
+  32 |   const datesText = await page.locator('[data-testid="searchbox-dates-container"]').textContent();
+  33 |   expect(datesText).toContain('Fri, Apr 18');
+  34 |   expect(datesText).toContain('Fri, May 16');
+  35 | });
+  36 |
+  37 | test('Apply "Guest Rating: 8+" filter', async ({ page }) => {
+  38 |   await page.goto('https://www.booking.com');
+  39 |   await page.click("input[id=':rh:']");
+  40 |   await page.fill('[name="ss"]', 'New York');
+  41 |   await page.getByRole('button', { name: 'New York New York, United' }).click();
+  42 |   await page.locator('span[data-date="2025-04-18"]').click();
+  43 |   await page.getByRole('button', { name: 'Next month' }).click();
+  44 |   await page.locator('span[data-date="2025-05-16"]').click();
+  45 |   await page.getByRole('button', { name: 'Search' }).click();
+> 46 |   await page.getByLabel('Very Good: 8+', { exact: true }).click();
+     |                                                           ^ Error: locator.click: Target page, context or browser has been closed
+  47 |
+  48 |   const element = page.locator('[data-testid="filter:review_score=80"]');
+  49 |   await expect(element).toBeVisible();
+  50 |   await expect(element).toHaveText('Very Good: 8+');
+  51 | });
+  52 |
+  53 | test('Sort by "Lowest Price"', async ({ page }) => {
+  54 |   await page.goto('https://www.booking.com');
+  55 |   await page.click("input[id=':rh:']");
+  56 |   await page.fill('[name="ss"]', 'New York');
+  57 |   await page.getByRole('button', { name: 'New York New York, United' }).click();
+  58 |   await page.locator('span[data-date="2025-04-18"]').click();
+  59 |   await page.getByRole('button', { name: 'Next month' }).click();
+  60 |   await page.locator('span[data-date="2025-05-16"]').click();
+  61 |   await page.getByRole('button', { name: 'Search' }).click();
+  62 |
+  63 |   await page.getByTestId('sorters-dropdown-trigger').click();
+  64 |   await page.getByRole('option', { name: 'Property rating (low to high)' }).click();
+  65 |   await page.getByTestId('sorters-dropdown-trigger').click();
+  66 |
+  67 |   const prices = await page.locator('.bui-price-display__value');
+  68 |   const priceValues = await prices.allTextContents();
+  69 |   const sortedPrices = priceValues.map(price => parseFloat(price.replace('$', '').trim()));
+  70 |   const isSorted = sortedPrices.every((val, i, arr) => i === 0 || val >= arr[i - 1]);
+  71 |   expect(isSorted).toBe(true);
+  72 | });
+  73 |
+  74 | test('Perform search without applying guest rating filter', async ({ page }) => {
+  75 |   await page.goto('https://www.booking.com');
+  76 |   await page.click("input[id=':rh:']");
+  77 |   await page.fill('[name="ss"]', 'New York');
+  78 |   await page.getByRole('button', { name: 'New York New York, United' }).click();
+  79 |   await page.locator('span[data-date="2025-04-18"]').click();
+  80 |   await page.getByRole('button', { name: 'Next month' }).click();
+  81 |   await page.locator('span[data-date="2025-05-16"]').click();
+  82 |   await page.getByRole('button', { name: 'Search' }).click();
+  83 |
+  84 |   await page.waitForSelector(
+  85 |     'div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1) > span:nth-child(1) > div:nth-child(1) > div:nth-child(1)',
+  86 |     { state: 'visible', timeout: 5000 }
+  87 |   );
+  88 |
+  89 |   const ratingElements = await page.locator(
+  90 |     'div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1) > span:nth-child(1) > div:nth-child(1) > div:nth-child(1)'
+  91 |   );
+  92 |
+  93 |   const ratingCount = await ratingElements.count();
+  94 |   console.log(`Cantidad total de ratings encontrados: ${ratingCount}`);
+  95 | });
+  96 |
+  97 |
+```

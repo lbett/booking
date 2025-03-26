@@ -43,8 +43,11 @@ test('Apply "Guest Rating: 8+" filter', async ({ page }) => {
   await page.getByRole('button', { name: 'Next month' }).click();
   await page.locator('span[data-date="2025-05-16"]').click();
   await page.getByRole('button', { name: 'Search' }).click();
-  await page.locator('[id="filter_group_review_score_\\:r30\\:"]').getByText('Very Good: 8+').click();
+  await page.waitForLoadState('networkidle');
 
+  await page.locator("#filter_group_review_score_\\:r30\\:").scrollIntoViewIfNeeded();
+  await page.locator("#filter_group_review_score_\\:r30\\:").getByText('Very Good: 8+').click();
+  
   const element = page.locator('[data-testid="filter:review_score=80"]');
   await expect(element).toBeVisible();
   await expect(element).toHaveText('Very Good: 8+');
