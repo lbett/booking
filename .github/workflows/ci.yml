@@ -1,0 +1,48 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main  # Puedes cambiar 'main' por la rama principal de tu repositorio
+  pull_request:
+    branches:
+      - main  # Si quieres que se ejecute también en los PRs
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Puedes cambiar esto por 'macos-latest' si usas MacOS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # O la versión de Node.js que estés utilizando
+
+      - name: Install dependencies
+        run: |
+          npm install
+          
+      - name: Run Playwright tests
+        run: |
+          npm run test  # Aquí usas el comando que ejecuta tus tests (puede ser 'npm run test' o el que tengas configurado)
+
+      - name: Install Allure commandline
+        run: |
+          npm install -g allure-commandline --save-dev
+          
+      - name: Generate Allure report
+        run: |
+          allure generate allure-results --clean
+          
+      - name: Upload Allure report as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: allure-report
+
+      - name: Serve Allure report
+        run: |
+          allure serve allure-results
