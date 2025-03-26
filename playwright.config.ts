@@ -8,13 +8,19 @@ export default defineConfig({
   },
   reporter: [
     ['list'],
-    ['allure-playwright']
+    ['allure-playwright'],
   ],
-  use: {
-    headless: false,
-    viewport: { width: 1280, height: 720 },
-    actionTimeout: 0,
-    ignoreHTTPSErrors: true,
-    video: 'on-first-retry',
-  },
+  projects: [
+    {
+      name: 'chromium', // Project name
+      use: {
+        browserName: 'chromium', // Config for using Chromium browser
+        headless: false, // Set to `true` if you want the browser to run headlessly (without UI)
+        viewport: { width: 1280, height: 720 },
+        actionTimeout: 0,
+        ignoreHTTPSErrors: true,
+        video: 'on-first-retry',
+      },
+    },
+  ],
 });
