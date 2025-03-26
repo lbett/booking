@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  #  'macos-latest' macOS
+    runs-on: ubuntu-latest  
 
     steps:
       - name: Checkout code
@@ -24,25 +24,28 @@ jobs:
       - name: Install dependencies
         run: npm install
           
+      - name: Install Playwright browsers
+        run: npx playwright install  
+
       - name: Run Playwright tests
         run: npm run test  
 
-      - name: Debug workspace structure
-        run: ls -R  # Check structure of files
-
-      - name: Check if Allure results exist before generating the report
-        run: |
-          if [ ! -d allure-results ]; then
-            echo "❌ ERROR: allure-results directory does not exist!"
-            exit 1
-          fi
-          echo "✅ allure-results directory found!"
-
       - name: Install Allure commandline
         run: npm install -g allure-commandline --save-dev
+          
+      - name: Wait for results to be generated
+        run: sleep 5  
 
       - name: Generate Allure report
         run: allure generate allure-results --clean  
+
+      - name: Check Allure results
+        run: |
+          if [ ! -d allure-results ]; then
+            echo "❌ ERROR: allure-results directory does not exist"
+            exit 1
+          fi
+          echo "✅ allure-results directory exists"
 
       - name: Upload Allure report as artifact
         uses: actions/upload-artifact@v4
