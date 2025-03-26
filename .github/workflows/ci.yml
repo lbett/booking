@@ -27,7 +27,7 @@ jobs:
           
       - name: Run Playwright tests
         run: |
-          npm run test  # Ejecuta los tests de Playwright
+          npm run test  
 
       - name: Install Allure commandline
         run: |
@@ -35,14 +35,22 @@ jobs:
           
       - name: Generate Allure report
         run: |
-          allure generate allure-results --clean  # Genera el reporte de Allure
+          allure generate allure-results --clean  
+
+      - name: Check Allure results
+        run: |
+          if [ ! -d allure-results ]; then
+            echo "allure-results directory does not exist"
+            exit 1
+          fi
+          echo "allure-results directory exists"
 
       - name: Upload Allure report as artifact
         uses: actions/upload-artifact@v2
         with:
           name: allure-report
-          path: allure-results  #  allure-results, no allure-report
+          path: allure-results  
 
       - name: Serve Allure report
         run: |
-          allure serve allure-results  # Sirve el reporte en el servidor local
+          allure serve allure-results  
