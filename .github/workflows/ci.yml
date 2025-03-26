@@ -3,14 +3,14 @@ name: CI Workflow
 on:
   push:
     branches:
-      - main  # Puedes cambiar 'main' por la rama principal de tu repositorio
+      - main
   pull_request:
     branches:
-      - main  # Si quieres que se ejecute también en los PRs
+      - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Puedes cambiar esto por 'macos-latest' si usas MacOS
+    runs-on: ubuntu-latest  # O usa 'macos-latest' si estás en MacOS
 
     steps:
       - name: Checkout code
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # O la versión de Node.js que estés utilizando
+          node-version: '16'
 
       - name: Install dependencies
         run: |
@@ -27,7 +27,7 @@ jobs:
           
       - name: Run Playwright tests
         run: |
-          npm run test  # Aquí usas el comando que ejecuta tus tests (puede ser 'npm run test' o el que tengas configurado)
+          npm run test  # Ejecuta los tests de Playwright
 
       - name: Install Allure commandline
         run: |
@@ -35,14 +35,14 @@ jobs:
           
       - name: Generate Allure report
         run: |
-          allure generate allure-results --clean
-          
+          allure generate allure-results --clean  # Genera el reporte de Allure
+
       - name: Upload Allure report as artifact
         uses: actions/upload-artifact@v2
         with:
           name: allure-report
-          path: allure-report
+          path: allure-results  # Usamos allure-results aquí, no allure-report
 
       - name: Serve Allure report
         run: |
-          allure serve allure-results
+          allure serve allure-results  # Sirve el reporte en el servidor local
