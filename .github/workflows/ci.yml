@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest 
 
     steps:
       - name: Checkout code
@@ -28,7 +28,9 @@ jobs:
         run: npx playwright install  
 
       - name: Run Playwright tests
-        run: npm run test  
+        run: |
+          # Ejecutar las pruebas con Chromium en modo headless
+          npx playwright test --project=chromium --headed=false --no-sandbox --disable-gpu
 
       - name: Install Allure commandline
         run: npm install -g allure-commandline --save-dev
